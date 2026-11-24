@@ -1154,6 +1154,8 @@ function refreshBoxes(){
     html += `<div class="box pend"><b>En attente de validation</b><br>Vos changements du ${esc(fmtDateTime(p.date))} ont été envoyés au coordinateur. Ils seront visibles par tous après sa validation. Vous pouvez encore les modifier et les renvoyer.</div>`;
   } else if (!canEdit(a) && S.role === 'president'){
     html += `<div class="box info">Fiche d'une autre association, en lecture seule : vous pouvez contacter son président, mais pas modifier la fiche.</div>`;
+  } else if (S.role === 'lecture'){
+    html += `<div class="box info">Consultation seule : vous pouvez contacter le président, mais pas modifier la fiche.</div>`;
   }
   box.innerHTML = html;
 }
@@ -1257,6 +1259,7 @@ async function openCodes(){
   catch(e){ $('#codesBody').innerHTML = `<p style="color:var(--danger)">${esc(errMsg(e))}</p>`; }
 }
 function inviteText(c){
+  if (c.role === 'lecture') return `Bonjour,\n\nVoici l'annuaire des présidents de la FASESIF :\n${SITE_URL}\n\nVotre code de consultation : ${c.code}\n\nOuvrez le lien et saisissez le code : vous pouvez consulter toutes les fiches, sans pouvoir les modifier.\nSur téléphone, vous pouvez l'ajouter à votre écran d'accueil.\n\nMerci !`;
   return `Bonjour,\n\nVoici l'annuaire des présidents de la FASESIF :\n${SITE_URL}\n\nVotre code d'accès (${c.ville || c.nom}) : ${c.code}\n\nOuvrez le lien, saisissez le code, puis remplissez la fiche de votre association et envoyez-la pour validation.\nSur téléphone, vous pouvez l'ajouter à votre écran d'accueil.\n\nMerci !`;
 }
 function renderCodes(){
